@@ -1,0 +1,42 @@
+@startuml
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+Entity Customer {
+    c_id : Bigint
+    --
+    c_firstname : Varchar
+    c_lastname : Varchar
+    c_isPrivat : Boolean
+}
+
+Entity Contract {
+    co_id : Bigint
+    --
+    co_c_id : Bigint
+    co_p_id : Bigint
+    co_start_date : Date
+    co_end_date : Date
+    co_pay_date : Date
+}
+
+Entity Location {
+    l_id : Bigint
+    --
+    l_name : Varchar
+    l_zipcode : Varchar
+}
+
+Entity Parkingspot {
+    p_id : Bigint
+    --
+    p_l_id : Bigint
+    p_type : Varchar
+    p_price_per_day : Float
+    p_position : int
+}
+
+Location "1" -- "*" Parkingspot : "contains"
+Customer "1" -- "*" Contract : " has"
+Contract "*" -- "1" Parkingspot : "contains"
+@enduml
