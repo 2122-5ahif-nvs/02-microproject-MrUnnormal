@@ -1,0 +1,16 @@
+= Kaufmann - Carparkmanagement
+
+== Description
+With this application it should be possible to manage car parks for private customers i.e.  "garage cities" or enterprise customers for example shopping malls.
+
+=== Class diagram
+[plantuml, cld, png, align=left]
+----
+include::plantuml/cld.puml[]
+----
+
+=== Use-case diagram
+[plantuml, ucd, png, align=left]
+----
+include::plantuml/ucd.puml[]
+----

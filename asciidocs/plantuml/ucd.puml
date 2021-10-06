@@ -1,0 +1,14 @@
+@startuml
+skinparam actorStyle awesome
+
+"Customer" as c
+"Admin" as a
+rectangle "Carparkmanagement"{
+    (Add location) as al
+    (Add parkingspot to location) as apl
+    (Get a list of free parkingspots) as gfp
+}
+c -- gfp
+a -- al
+a -- apl
+@enduml
