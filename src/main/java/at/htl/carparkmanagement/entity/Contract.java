@@ -1,9 +1,10 @@
 package at.htl.carparkmanagement.entity;
 
 import at.htl.carparkmanagement.repository.LocalDateAdapter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -21,27 +22,25 @@ public class Contract {
     private Long id;
 
     @Schema(required = true)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Customer customer;
 
     @Schema(required = true)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Parkingspot parkingspot;
 
     @Schema(required = true)
-    @JsonbProperty("start_date")
+    @JsonbDateFormat(value = "dd.MM.yyyy")
     @Column(name = "co_startDate", nullable = false)
-    @XmlJavaTypeAdapter(type=LocalDate.class, value= LocalDateAdapter.class)
     private LocalDate startDate;
 
-    @JsonbProperty("end_date")
     @Column(name = "co_endDate")
-    @XmlJavaTypeAdapter(type=LocalDate.class, value=LocalDateAdapter.class)
+    @JsonbDateFormat(value = "dd.MM.yyyy")
     private LocalDate endDate;
 
-    @JsonbProperty("pay_date")
+
     @Column(name = "co_payDate")
-    @XmlJavaTypeAdapter(type=LocalDate.class, value=LocalDateAdapter.class)
+    @JsonbDateFormat(value = "dd.MM.yyyy")
     private LocalDate payDate;
 
     public Contract(Long id, Customer customer, Parkingspot parkingspot, LocalDate startDate) {

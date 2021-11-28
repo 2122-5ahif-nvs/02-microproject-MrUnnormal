@@ -31,8 +31,16 @@ public class ContractRepository implements PanacheRepository<Contract> {
         if(contract.getId() != null) {
             return null;
         }
-        parkingspotRepository.add(contract.getParkingspot());
-        customerRepository.add(contract.getCustomer());
+        contract.setCustomer(
+                contract.getCustomer().getId() == null ?
+                    customerRepository.add(contract.getCustomer()) :
+                    customerRepository.find(contract.getCustomer().getId())
+        );
+        contract.setParkingspot(
+                contract.getParkingspot().getId() == null ?
+                        parkingspotRepository.add(contract.getParkingspot()) :
+                        parkingspotRepository.find(contract.getParkingspot().getId())
+        );
         this.persist(contract);
         return contract;
     }
@@ -41,8 +49,8 @@ public class ContractRepository implements PanacheRepository<Contract> {
     public Contract update(Contract contract) {
         if(contract.getId() != null) {
             Contract update = this.find(contract.getId());
-            update.setParkingspot(contract.getParkingspot());
-            update.setCustomer(contract.getCustomer());
+            update.setParkingspot(parkingspotRepository.find(contract.getParkingspot().getId()));
+            update.setCustomer(customerRepository.find(contract.getCustomer().getId()));
             update.setEndDate(contract.getEndDate());
             update.setStartDate(contract.getStartDate());
             update.setPayDate(contract.getPayDate());

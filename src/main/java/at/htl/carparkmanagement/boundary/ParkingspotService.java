@@ -8,7 +8,9 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
@@ -29,16 +31,8 @@ public class ParkingspotService {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public JsonArray getAllParkingspots() {
-        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        for (Parkingspot item : parkingspotRepository.findAll().list()) {
-            JsonObject object = Json.createObjectBuilder()
-                    .add("id", item.getId().toString())
-                    .add("location", item.getLocation().toString())
-                    .add("type", item.getType()).build();
-            arrayBuilder.add(object);
-        }
-        return arrayBuilder.build();
+    public List<Parkingspot> getAllParkingspots() {
+        return parkingspotRepository.listAll();
     }
 
     @GET

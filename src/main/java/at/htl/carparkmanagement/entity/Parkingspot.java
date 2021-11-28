@@ -22,7 +22,7 @@ public class Parkingspot {
     private String type;
 
     @Schema(required = true)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Location location;
 
     @Schema(required = true)

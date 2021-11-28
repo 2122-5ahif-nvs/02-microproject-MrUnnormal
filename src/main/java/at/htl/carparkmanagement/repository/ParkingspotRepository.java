@@ -30,7 +30,11 @@ public class ParkingspotRepository implements PanacheRepository<Parkingspot> {
         if(parkingspot.getId() != null) {
             return null;
         }
-        locationRepository.add(parkingspot.getLocation());
+        parkingspot.setLocation(
+                parkingspot.getLocation().getId() == null ?
+                        locationRepository.add(parkingspot.getLocation()) :
+                        locationRepository.find(parkingspot.getLocation().getId())
+        );
         this.persist(parkingspot);
         return parkingspot;
     }
@@ -39,8 +43,7 @@ public class ParkingspotRepository implements PanacheRepository<Parkingspot> {
     public Parkingspot update(Parkingspot parkingspot) {
         if(parkingspot.getId() != null) {
             Parkingspot update = this.find(parkingspot.getId());
-            update.setLocation(parkingspot.getLocation());
-            locationRepository.update(parkingspot.getLocation());
+            update.setLocation(locationRepository.update(parkingspot.getLocation()));
             update.setType(parkingspot.getType());
             update.setPosition(parkingspot.getPosition());
             update.setPricePerDay(parkingspot.getPricePerDay());
@@ -54,7 +57,11 @@ public class ParkingspotRepository implements PanacheRepository<Parkingspot> {
     }
 
     public List<Parkingspot> getFreeParkingspots(Location location) {
-        return getEntityManager().createNamedQuery("Parkingspot.getFree", Parkingspot.class).setParameter("location", location).getResultList();
+        if (location.getId() == null) {
+            throw new IllegalArgumentException();
+        }
+        var dbLocation = locationRepository.find(location.getId());
+        return getEntityManager().createNamedQuery("Parkingspot.getFree", Parkingspot.class).setParameter("location", dbLocation).getResultList();
     }
 
     @Transactional

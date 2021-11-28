@@ -12,12 +12,13 @@ import java.util.List;
 
 @Path("api/contract")
 @Tag(name = "Contract")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ContractService {
     @Inject
     ContractRepository contractRepository;
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Contract> getAllContract() {
         return contractRepository.findAll().list();
     }
@@ -25,7 +26,6 @@ public class ContractService {
     @GET
     @Path("{id}")
     @Operation(description = "Returns the Contract with the specified ID")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getById(@PathParam("id") Long id) {
         Contract returnValue = contractRepository.find(id);
         if(returnValue == null) {
@@ -35,10 +35,14 @@ public class ContractService {
     }
 
     @POST
-    @Operation(summary = "Rent Parkingspot", description = "Adds a Contract with all its nested objects (Customer, Parkingspot, Location) to a collection in the Repository when a customer rents a Parkingspot")
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Operation(summary = "Rent Parkingspot",
+            description = "Adds a Contract with all its nested objects (Customer, Parkingspot, Location) " +
+                    "to a collection in the Repository when a customer rents a Parkingspot"
+    )
     public Response addContract(Contract newItem, @Context UriInfo uriInfo) {
+        if (newItem.getStartDate() == null) {
+            return Response.status(400, "startdate cannot be null").build();
+        }
         newItem = contractRepository.add(newItem);
         if(newItem == null) {
             return Response.notModified("resource already existent").build();
@@ -54,8 +58,6 @@ public class ContractService {
     }
 
     @PUT
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updateContract(Contract updated, @Context UriInfo uriInfo) {
         boolean added = false;
         if(updated.getId() == null) {
@@ -74,8 +76,6 @@ public class ContractService {
     }
 
     @DELETE
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path("{id}")
     public Response deleteContract(@PathParam("id") Long id) {
         if(contractRepository.deleteContract(id)) {

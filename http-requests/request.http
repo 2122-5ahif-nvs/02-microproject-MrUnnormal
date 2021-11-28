@@ -1,0 +1,53 @@
+GET http://localhost:8080/api/parkingspot
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/parkingspot?id=2
+Accept: application/json
+
+###
+
+POST http://localhost:8080/api/parkingspot
+Content-Type: application/json
+Accept: application/json
+
+{
+  "location": {
+    "id": 2,
+    "name": "Garagen City",
+    "zipcode": "4060"
+  },
+  "position": 100,
+  "pricePerDay": 0.0,
+  "type": "Default"
+}
+
+###
+
+PUT http://localhost:8080/api/parkingspot
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 10,
+  "location": {
+    "id": 1,
+    "name": "Garagen City",
+    "zipcode": "4060"
+  },
+  "position": 100,
+  "pricePerDay": 0.0,
+  "type": "Premium"
+}
+
+###
+
+DELETE http://localhost:8080/api/parkingspot/1
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/parkingspot/free/1
+Accept: application/json
