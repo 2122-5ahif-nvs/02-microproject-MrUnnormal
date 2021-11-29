@@ -30,6 +30,10 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-websockets</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.intuit.karate</groupId>
       <artifactId>karate-apache</artifactId>
       <version>0.9.6</version>
